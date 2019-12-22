@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>查詢</title>
+    <style> 
+      .table { border-collapse: collapse; }
+      .table th, td {
+         border-bottom: 1px solid #ddd;
+         width: 250px;
+         text-align: left;
+         align: left;
+      }
+   </style> 
+</head>
+<body>
+    <div>
+        <form method="GET" action="{{ path('search') }}">
+            以日期查詢:<br>
+            <input type="date" name="searchDate"/><br>
+            <input type='text' name='id' value='{{id}}' style='display:none'/>
+            <input type="submit" name="isDate" value="確認"/><hr>
+        </form>
+        <a href="{{ path('show') }}"><input type="button" value="退出"/></a>
+    </div><hr>
+    <div id="result">
+        {# 剩餘金額為：{{result}} #}
+        <table>
+            <tr>
+                <th>存入金額</th>
+                <th>提出金額</th>
+                <th>餘額</th>
+                <th>日期</th>
+            </tr>
+            {% for t in transaction %}
+                <tr>
+                    <td>{{t.cashIn}}</td>
+                    <td>{{t.cashOut}}</td>
+                    <td>{{t.total}}</td>
+                    <td>{{t.date.format("Y-m-d H:i:s")}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% if pages > 0 %}
+            <a href="{{ path('search',{isPage: 1, id: id, searchDate: date}) }}">首頁</a>
+            {% for i in 1 .. pages %}
+                {% if page -3 < i and i < page +4 %}
+                    <a href="{{ path('search',{isPage: i, id: id, searchDate: date}) }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+            <a href="{{ path('search',{isPage: pages, id: id, searchDate: date}) }}">末頁</a>
+        {% endif %}
+    </div>
+</body>
+</html>
