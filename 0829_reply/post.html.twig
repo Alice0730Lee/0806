@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>留言板</title>
+    <style type="text/css">
+        #reply{
+            background-color: #E5E7E9
+        }
+    </style>
+</head>
+<body>
+    <div>
+        {%for user in pagination%}
+            <form method="post" action="{{ path('app_edit') }}">
+                <input type="hidden" name="_method" value="PUT">
+                {{user.id}}樓<br>
+                {{user.content}}<br>
+                by. {{user.name}}<br>
+                {{user.date.format("Y-m-d H:i:s")}}<br>
+                <input type='text' name='id' value='{{user.id}}' style='display:none'/>
+                <input type='submit' name='btnE' value='編輯'>
+                <input type='submit' name='btnR' value='回覆'><br>
+            </form>
+            <div id="reply">
+                <br>回覆<br><br>
+                {%for r in reply%}
+                    <form method="post" action="{{ path('app_edit') }}">
+                    <input type="hidden" name="_method" value="PUT">
+                    {%if r.id == user.id and r.0 != NULL%}
+                        {{r.0.content}}<br>
+                        by. {{r.0.name}}<br>
+                        {{r.0.date.format("Y-m-d H:i:s")}}
+                        <input type='text' name='id' value='{{r.0.id}}' style='display:none'/>
+                        <input type='submit' name='btnRE' value='編輯'><hr>
+                    {% endif %}
+                    </form>
+                {%endfor%}
+            </div>
+        {%endfor%}
+    </div>
+    <form method="post" action="{{ path('app_create') }}">
+        留言: <input type="text" name="con"/><br>
+        ID: <input type="text" name="name"/><hr>
+        <input type="submit" name="btnC" value="送出">
+    </form>
+    {{ knp_pagination_render(pagination) }}
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>回覆留言</title>
+</head>
+<body>
+    <div>
+        {{user.id}}樓<br>
+        原始留言：<br>
+        {{user.content}}<hr>
+        <form method="post" action="{{ path('app_reply') }}">
+            留言: <input type='text' name='reCon'/><br>
+            ID: <input type='text' name='reName'/><br>
+            <input type='text' name='uid' value="{{user.id}}" style='display:none'/>
+            <input type='submit' name='btnReply' value='確定回覆'/>
+            <input type='submit' name='btnCancel' value='取消回覆'/>
+        </form>
+    </div>
+</body>
+</html>
